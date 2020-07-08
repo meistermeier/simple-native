@@ -40,3 +40,7 @@ jobs:
     # Runs a single command using the runners shell
     - name: Package
       run: mvn package
+
+    - uses: actions/upload-artifact@v2
+      with:
+        path: target/simple-native
