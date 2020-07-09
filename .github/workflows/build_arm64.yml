@@ -23,16 +23,26 @@ jobs:
     - run: |
         docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
+
     - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Install maven
       with:
         args: >
           mkdir -p /usr/share/maven /usr/share/maven/ref \
           && curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
           && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
           && rm -f /tmp/apache-maven.tar.gz \
-          && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
-          && fc-cache -f -v && gu install native-image \
-          && mvn package
+          && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Setup env
+      with:
+        args: fc-cache -f -v && gu install native-image
+
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Run build
+      with:
+        args: mvn package
                
     - uses: actions/upload-artifact@v2
       with:
