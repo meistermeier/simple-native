@@ -27,7 +27,7 @@ jobs:
     - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
       name: Install maven (I)
       with:
-        args: mkdir -p /usr/share/maven /usr/share/maven/ref
+        args: 'mkdir -p /usr/share/maven /usr/share/maven/ref'
           
 
     - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
