@@ -25,14 +25,33 @@ jobs:
 
 
     - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
-      name: Install maven
+      name: Install maven (I)
       with:
-        args: >
-          mkdir -p /usr/share/maven /usr/share/maven/ref \
-          && curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
-          && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
-          && rm -f /tmp/apache-maven.tar.gz \
+        args: mkdir -p /usr/share/maven /usr/share/maven/ref
+          
+
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Install maven (II)
+      with:
+        args: curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+          
+
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Install maven (III)
+      with:
+        args: tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1
+
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Install maven (IV)
+      with:
+        args: rm -f /tmp/apache-maven.tar.gz
           && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+          
+
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      name: Install maven (V)
+      with:
+        args: ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
     - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
       name: Setup env
