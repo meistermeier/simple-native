@@ -7,7 +7,7 @@
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/bash",
-		"java.home": "/opt/graalvm-ce-java8-20.1.0/"
+		"java.home": "/opt/graalvm-ce-java11-20.1.0/"
 	},
 	
 	// Add the IDs of extensions you want installed when the container is created.
