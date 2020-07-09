@@ -16,31 +16,24 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    container:
-      image: oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
-      env:
-        MAVEN_HOME: /usr/share/maven
-        MAVEN_CONFIG: /root/.m2
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Install maven
-      run: |
-       mkdir -p /usr/share/maven /usr/share/maven/ref \
-        && curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
-        && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
-        && rm -f /tmp/apache-maven.tar.gz \
-        && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-      
-    - name: setup native-image
-      run: fc-cache -f -v && gu install native-image
-
     - uses: actions/checkout@v2
+    - run: |
+        docker run --rm --privileged multiarch/qemu-user-static:register --reset
 
-    # Runs a single command using the runners shell
-    - name: Package
-      run: mvn package
-
+    - uses: docker://oracle/graalvm-ce:20.1.0-java8@sha256:21d0cb01226f6b9f1ded61ce694f31c489ed0a81d11e4f599025739ea37e33f3
+      with:
+        args: >
+          mkdir -p /usr/share/maven /usr/share/maven/ref \
+          && curl -fsSL -o /tmp/apache-maven.tar.gz https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz \
+          && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
+          && rm -f /tmp/apache-maven.tar.gz \
+          && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
+          && fc-cache -f -v && gu install native-image \
+          && mvn package
+               
     - uses: actions/upload-artifact@v2
       with:
         name: simple-native
